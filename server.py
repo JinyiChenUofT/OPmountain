@@ -27,6 +27,14 @@ def predict():
     #data = request.get_json(force=True)
     return render_template('predict.html')
 
+@app.route('/result', methods=['POST'])
+def result():
+    #data = request.get_json(force=True)
+    result = request.form
+    price=1000
+    print (result)
+    return render_template('result.html',result=result,price=price)
+
 @app.route('/graph/<city>')
 def graph(city):
     return render_template('graph.html',city=city)
