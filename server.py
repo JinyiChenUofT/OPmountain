@@ -17,15 +17,30 @@ from flask import send_file
 app = Flask(__name__)
 #model = pickle.load(open('model.pkl','rb'))
 
+current_country= 'Canada'
+current_city = 'Toronto'
+country_list = ['Canada','America','England']
+Canada_cities = ['Calgray','Edmonton','Halifax','Hamilton','Montreal', 'Ottawa','Quebec','Toronto','Vancouver','Winnipeg']
+America_cities = ['Boston','Chicago','Dallas','Las Vegas','Los Angeles','New Orleans','New York','Philadelphia','San Francisco','Washington']
+England_cities = ['Cardiff','Edinburgh','Greenwich','IsLington','Lancaster','Lincoln','Liverpool','London','Manchester','Newham']
+
 @app.route('/')
 def home():
-    return render_template('index.html')
+    return render_template('index.html',England_cities=England_cities)
 
 
-@app.route('/predict')
+@app.route('/predict', methods=['POST'])
 def predict():
-    #data = request.get_json(force=True)
-    return render_template('predict.html')
+    result = request.form
+    city = result["predict_city"]
+    country = result["predict_country"]
+    factor, default_value = topFactor(country,city)
+    global current_country, current_city
+    current_country = country
+    current_city = city
+    return render_template('predict.html', city=city, country=country, factor=factor, default_value = default_value,
+                          England_cities=England_cities)
+
 
 @app.route('/result', methods=['POST'])
 def result():
@@ -33,11 +48,441 @@ def result():
     result = request.form
     price=1000
     print (result)
-    return render_template('result.html',result=result,price=price)
+    city = current_city
+    country = current_country
 
-@app.route('/graph/<city>')
-def graph(city):
-    return render_template('graph.html',city=city)
+
+    factor, default_value=topFactor(country,city)
+    index=0
+    if city == 'Toronto':
+        index=1
+        price=839000
+        immigration=81368.0
+        population=2.73
+        balancesheet=111495
+        #homicide per 10000
+        wage=24.86
+        #indicatior wage
+        immf=0.2
+        popf=0.17
+        homicidef=0.125
+        wagef=0.1
+        immigration2=float(result["factor1"])
+        print("check:   123")
+        print(immigration2)
+        population2=float(result["factor2"])
+        balancesheet2=float(result["factor3"])
+        #homicide per 10000
+        wage2=float(result["factor4"])
+        price=price*(1+immf*(immigration2-immigration)/(immigration2+immigration))
+        price=price*(1+popf*(population2-population)/(population2+population))
+        price=price*(1+homicidef*(balancesheet-balancesheet2)/(balancesheet+balancesheet2))
+        price=price*(1+wagef*(wage2-wage)/(wage2+wage))
+    elif city == 'Calgary':
+        index=1
+        price=409800
+        immigration=21433.0
+        population=1.24
+        balancesheet=111495
+        #homicide per 10000
+        wage=24.86
+        #indicatior wage
+        immf=0.075
+        popf=0.157
+        homicidef=0.118
+        wagef=0.057
+        immigration2=float(result["factor1"])
+        print("check:   123")
+        print(immigration2)
+        population2=float(result["factor2"])
+        balancesheet2=float(result["factor3"])
+        #homicide per 10000
+        wage2=float(result["factor4"])
+        price=price*(1+immf*(immigration2-immigration)/(immigration2+immigration))
+        price=price*(1+popf*(population2-population)/(population2+population))
+        price=price*(1+homicidef*(balancesheet-balancesheet2)/(balancesheet+balancesheet2))
+        price=price*(1+wagef*(wage2-wage)/(wage2+wage))
+    elif city == 'Edmonton':
+        index=1
+        price=320000
+        immigration=17884.0
+        population=0.97
+        balancesheet=111495
+        #homicide per 10000
+        wage=24.86
+        #indicatior wage
+        immf=0.096
+        popf=0.24
+        homicidef=0.06
+        wagef=0.03
+        immigration2=float(result["factor1"])
+        print("check:   123")
+        print(immigration2)
+        population2=float(result["factor2"])
+        balancesheet2=float(result["factor3"])
+        #homicide per 10000
+        wage2=float(result["factor4"])
+        price=price*(1+immf*(immigration2-immigration)/(immigration2+immigration))
+        price=price*(1+popf*(population2-population)/(population2+population))
+        price=price*(1+homicidef*(balancesheet-balancesheet2)/(balancesheet+balancesheet2))
+        price=price*(1+wagef*(wage2-wage)/(wage2+wage))
+    elif city== 'Halifax':
+        index=1
+        price=303000
+        immigration=4568.0
+        population=0.40
+        balancesheet=111495
+        #homicide per 10000
+        wage=24.86
+        #indicatior wage
+        immf=0.165
+        popf=0.09
+        homicidef=0.08
+        wagef=0.04
+        immigration2=float(result["factor1"])
+        print("check:   123")
+        print(immigration2)
+        population2=float(result["factor2"])
+        balancesheet2=float(result["factor3"])
+        #homicide per 10000
+        wage2=float(result["factor4"])
+        price=price*(1+immf*(immigration2-immigration)/(immigration2+immigration))
+        price=price*(1+popf*(population2-population)/(population2+population))
+        price=price*(1+homicidef*(balancesheet-balancesheet2)/(balancesheet+balancesheet2))
+        price=price*(1+wagef*(wage2-wage)/(wage2+wage))
+    elif city=='Montreal':
+        index=1
+        price=493000
+        immigration=41643.0
+        population=1.705
+        balancesheet=111495
+        #homicide per 10000
+        wage=24.86
+        #indicatior wage
+        immf=0.09
+        popf=0.17
+        homicidef=0.13
+        wagef=0.1
+        immigration2=float(result["factor1"])
+        print("check:   123")
+        print(immigration2)
+        population2=float(result["factor2"])
+        balancesheet2=float(result["factor3"])
+        #homicide per 10000
+        wage2=float(result["factor4"])
+        price=price*(1+immf*(immigration2-immigration)/(immigration2+immigration))
+        price=price*(1+popf*(population2-population)/(population2+population))
+        price=price*(1+homicidef*(balancesheet-balancesheet2)/(balancesheet+balancesheet2))
+        price=price*(1+wagef*(wage2-wage)/(wage2+wage))
+    elif city=='Hamilton':
+        index=1
+        price=560000
+        immigration=4191.0
+        population=0.5369
+        balancesheet=111495
+        #homicide per 10000
+        wage=24.86
+        #indicatior wage
+        immf=0.134
+        popf=0.08
+        homicidef=0.11
+        wagef=0.07
+        immigration2=float(result["factor1"])
+        print("check:   123")
+        print(immigration2)
+        population2=float(result["factor2"])
+        balancesheet2=float(result["factor3"])
+        #homicide per 10000
+        wage2=float(result["factor4"])
+        price=price*(1+immf*(immigration2-immigration)/(immigration2+immigration))
+        price=price*(1+popf*(population2-population)/(population2+population))
+        price=price*(1+homicidef*(balancesheet-balancesheet2)/(balancesheet+balancesheet2))
+        price=price*(1+wagef*(wage2-wage)/(wage2+wage))
+    elif city=='Ottawa':
+        index=1
+        price=420000
+        immigration=1365.0
+        population=0.934
+        balancesheet=111495
+        #homicide per 10000
+        wage=24.86
+        #indicatior wage
+        immf=0.1
+        popf=0.19
+        homicidef=0.12
+        wagef=0.07
+        immigration2=float(result["factor1"])
+        print("check:   123")
+        print(immigration2)
+        population2=float(result["factor2"])
+        balancesheet2=float(result["factor3"])
+        #homicide per 10000
+        wage2=float(result["factor4"])
+        price=price*(1+immf*(immigration2-immigration)/(immigration2+immigration))
+        price=price*(1+popf*(population2-population)/(population2+population))
+        price=price*(1+homicidef*(balancesheet-balancesheet2)/(balancesheet+balancesheet2))
+        price=price*(1+wagef*(wage2-wage)/(wage2+wage))
+    elif city=='Quebec':
+        index=1
+        price=316700
+        immigration=default_value[0]
+        population=default_value[1]
+        balancesheet=111495
+        #homicide per 10000
+        wage=24.86
+        #indicatior wage
+        immf=0.096
+        popf=0.096
+        homicidef=0.123
+        wagef=0.06
+        immigration2=float(result["factor1"])
+        print("check:   123")
+        print(immigration2)
+        population2=float(result["factor2"])
+        balancesheet2=float(result["factor3"])
+        #homicide per 10000
+        wage2=float(result["factor4"])
+        price=price*(1+immf*(immigration2-immigration)/(immigration2+immigration))
+        price=price*(1+popf*(population2-population)/(population2+population))
+        price=price*(1+homicidef*(balancesheet-balancesheet2)/(balancesheet+balancesheet2))
+        price=price*(1+wagef*(wage2-wage)/(wage2+wage))
+    elif city=='Vancouver':
+        index=1
+        price=1019600
+        immigration=default_value[0]
+        population=default_value[1]
+        balancesheet=111495
+        #homicide per 10000
+        wage=24.86
+        #indicatior wage
+        immf=0.13
+        popf=0.1
+        homicidef=0.128
+        wagef=0.06
+        immigration2=float(result["factor1"])
+        print("check:   123")
+        print(immigration2)
+        population2=float(result["factor2"])
+        balancesheet2=float(result["factor3"])
+        #homicide per 10000
+        wage2=float(result["factor4"])
+        price=price*(1+immf*(immigration2-immigration)/(immigration2+immigration))
+        price=price*(1+popf*(population2-population)/(population2+population))
+        price=price*(1+homicidef*(balancesheet-balancesheet2)/(balancesheet+balancesheet2))
+        price=price*(1+wagef*(wage2-wage)/(wage2+wage))
+    elif city=='Winnipeg':
+        index=1
+        price=302000
+        immigration=default_value[0]
+        population=default_value[1]
+        balancesheet=111495
+        #homicide per 10000
+        wage=24.86
+        #indicatior wage
+        immf=0.065
+        popf=0.1
+        homicidef=0.14
+        wagef=0.04
+        immigration2=float(result["factor1"])
+        print("check:   123")
+        print(immigration2)
+        population2=float(result["factor2"])
+        balancesheet2=float(result["factor3"])
+        #homicide per 10000
+        wage2=float(result["factor4"])
+        price=price*(1+immf*(immigration2-immigration)/(immigration2+immigration))
+        price=price*(1+popf*(population2-population)/(population2+population))
+        price=price*(1+homicidef*(balancesheet-balancesheet2)/(balancesheet+balancesheet2))
+        price=price*(1+wagef*(wage2-wage)/(wage2+wage))
+
+    if country=='America':
+        #'Population','Inflation Rate','GDP','Wage'
+        population=default_value[0]
+        inflation=default_value[1]
+        gdp=default_value[2]
+        wage=default_value[3]
+
+        popf=10
+        inff=10
+        gdpf=10
+        wagef=10
+        
+        population2=float(result["factor1"])
+        inflation2=float(result["factor2"])
+        gdp2=float(result["factor3"])
+        #homicide per 10000
+        wage2=float(result["factor4"])
+        if city=='New York':
+            price=411000
+            popf=0.238
+            inff=0.04
+            gdpf=0.01
+            wagef=0.08
+        elif city=='San Francisco':
+            price=1365700
+            popf=0.2
+            inff=0.125
+            gdpf=0.07
+            wagef=0.1
+        elif city=='Los Angeles':
+            price=694200
+            popf=0.26
+            inff=0.055
+            gdpf=0.122
+            wagef=0.13
+        elif city=='Washington':
+            price=545000
+            popf=0.16
+            inff=0.077
+            gdpf=0.073
+            wagef=0.027
+        elif city=='Las Vegas':
+            price=655700
+            popf=0.2
+            inff=0.05
+            gdpf=0.16
+            wagef=0.14
+        elif city=='Chicago':
+            price=655700
+            popf=0.23
+            inff=0.14
+            gdpf=0.1
+            wagef=0.075
+        elif city=='New Orleans':
+            price=246300
+            popf=0.24
+            inff=0.07
+            gdpf=0.05
+            wagef=0.15
+        elif city=='Boston':
+            price=630200
+            popf=0.18
+            inff=0.15
+            gdpf=0.1
+            wagef=0.8
+        elif city=='Philadelphia':
+            price=156100
+            popf=0.165
+            inff=0.045
+            gdpf=0.115
+            wagef=0.055
+        elif city=='Dallas':
+            price=379900
+            popf=0.18
+            inff=0.127
+            gdpf=0.045
+            wagef=0.115
+        
+
+        price=price*(1+popf*(population2-population)/(population2+population))
+        price=price*(1+inff*(inflation2-inflation)/(inflation2+inflation))
+        price=price*(1+gdpf*(gdp2-gdp)/(gdp2+gdp))
+        price=price*(1+wagef*(wage2-wage)/(wage2+wage))
+
+    if country=='England':
+        #''CPI','PMI','Population','Unemployment'
+        cpi=default_value[0]
+        pmi=default_value[1]
+        population=default_value[2]
+        unemployment=default_value[3]
+
+        cpif=10
+        pmif=10
+        popf=10
+        unef=10
+        
+        cpi2=float(result["factor1"])
+        pmi2=float(result["factor2"])
+        population2=float(result["factor3"])
+        #homicide per 10000
+        unemployment2=float(result["factor4"])
+
+        if city=='Cardiff':
+            price=210803
+            cpif=0.127
+            pmif=0.22
+            popf=0.11
+            unef=0.06
+        elif city=='Edinburgh':
+            price=260758
+            cpif=0.1
+            pmif=0.13
+            popf=0.17
+            unef=0.16
+        elif city=='GreenWich':
+            price=386899
+            cpif=0.24
+            pmif=0.22
+            popf=0.17
+            unef=0.05
+        elif city=='Islington':
+            price=631737
+            cpif=0.24
+            pmif=0.2
+            popf=0.15
+            unef=0.07
+        elif city=='Lancaster':
+            price=152387
+            cpif=0.01
+            pmif=0.22
+            popf=0.085
+            unef=0.15
+        elif city=='Lincoln':
+            price=151869
+            cpif=0.025
+            pmif=0.22
+            popf=0.15
+            unef=0.16
+        elif city=='Manchester':
+            price=183992
+            cpif=0.095
+            pmif=0.21
+            popf=0.14
+            unef=0.12
+        elif city=='Newham':
+            price=357612
+            cpif=0.155
+            pmif=0.17
+            popf=0.12
+            unef=0.1
+        elif city=='Liverpool':
+            price=137163
+            cpif=0.13
+            pmif=0.26
+            popf=0.08
+            unef=0.05
+        elif city=='London':
+            price=473822
+            cpif=0.125
+            pmif=0.25
+            popf=0.1
+            unef=0.1
+        
+
+
+        price=price*(1+cpif*(cpi2-cpi)/(cpi2+cpi))
+        price=price*(1+pmif*(pmi2-pmi)/(pmi2+pmi))
+        price=price*(1+popf*(population2-population)/(population2+population))
+        price=price*(1+unef*(unemployment-unemployment2)/(unemployment+unemployment2))  
+
+    price = round(price,2)
+    return render_template('result.html',result=result,price=price,city=current_city,country=current_country,factor=factor, default_value=default_value,
+                          England_cities=England_cities)
+
+@app.route('/graph', methods=['POST'])
+def graph():
+    result = request.form
+    city = result["city"]
+    filename = 'img/feature-importance/'+city.lower()+'.png'
+    return render_template('graph.html', city=city, filename=filename,
+                      England_cities=England_cities)
+
+@app.route('/display_graph/<select_city>')
+def display_graph(select_city):
+    city = select_city
+    filename = 'img/feature-importance/'+city.lower()+'.png'
+    return render_template('graph.html', city=city, filename=filename,
+                      England_cities=England_cities)
 
 
 @app.route('/downloadCSV') # this is a job for GET, not POST
@@ -55,5 +500,94 @@ def predict():
     output = prediction[0]
     return jsonify(output)
 ''' 
+def topFactor(country,city):
+    factor = []
+    default_value = []
+    # Canada
+    if country not in country_list:
+      if city in Canada_cities:
+        country='Canada'
+      elif city in America_cities:
+        country='America'
+      elif city in England_cities:
+        country='England'
+      
+    
+    if country.lower() =="canada":
+      factor = ['Immigration','Population','Balance Sheet','Indicator Wage']
+      if city.lower() =="toronto":
+        default_value = [81368,2.73,111495,24.86]
+      elif city.lower() == "vancouver":
+        default_value = [29714,0.63,111495,24.86]
+      elif city.lower() == "ottawa":
+        default_value = [1365,0.93,111495,24.86]
+      elif city.lower() == "quebec":
+        default_value = [3515,0.53,111495,24.86]
+      elif city.lower() == "winnipeg":
+        default_value = [14067,0.70,111495,24.86]
+      elif city.lower() == "montreal":
+        default_value = [41643,1.7,111495,24.86]
+      elif city.lower() == "hamilton":
+        default_value = [4191,0.54, 111495,24.86]
+      elif city.lower() == "halifax":
+        default_value = [4568,0.40,111495,24.86]
+      elif city.lower() == "edmonton":
+        default_value = [17884,0.97,111495,24.86]
+      elif city.lower() == "calgary":
+        default_value = [21433,1.23,111495,24.86]
+    
+    #America
+    elif country.lower() =="america":
+      factor = ['Population','Inflation Rate','GDP','Wage']
+      if city.lower() =="boston":
+        default_value = [0.69,2.53,78466,21.83]
+      elif city.lower() == "chicago":
+        default_value = [2.72,2.53,54771,21.83]
+      elif city.lower() == "dallas":
+        default_value = [1.19,3.38,57092,13.94]
+      elif city.lower() == "las vegas":
+        default_value = [0.64,2.53,43584,22.83]
+      elif city.lower() == "los angeles":
+        default_value = [4,2.53,67763,22.83]
+      elif city.lower() == "new orleans":
+        default_value = [0.39,2.53,67763,22.83]
+      elif city.lower() == "new york":
+        default_value = [8.62,2.53,1103000,21.83]
+      elif city.lower() == "philadelphia":
+        default_value = [1.52,2.53,76452,22.83]
+      elif city.lower() == "san francisco":
+        default_value = [0.88,2.53,89978,22.83]
+      elif city.lower() == "washington":
+        default_value = [0.69,2.53,19390.6,21.83]
+
+
+
+    #England
+    elif country.lower() =="england":
+      factor = ['CPI','PMI','Population','Unemployment']
+      if city.lower() =="cardiff":
+        default_value = [106.3,52.8,284493,43487.40]
+      elif city.lower() == "edinburgh":
+        default_value = [106.3,52.8,418460,43487.40]
+      elif city.lower() == "greenwich":
+        default_value = [106.3,52.8,256774,43487.40]
+      elif city.lower() == "islington":
+        default_value = [106.3,52.8,204961,43487.40]
+      elif city.lower() == "lancaster":
+        default_value = [106.3,52.8,127941,43487.40]
+      elif city.lower() == "lincoln":
+        default_value = [106.3,52.8,95263,43487.40]
+      elif city.lower() == "liverpool":
+        default_value = [106.3,52.8,543009,43487.40]
+      elif city.lower() == "london":
+        default_value = [106.3,52.8,8173941,43487.40]
+      elif city.lower() == "manchester":
+        default_value = [106.3,52.8,413149,43487.40]
+      elif city.lower() == "newham":
+        default_value = [106.3,52.8,299056,43487.40]
+  
+
+    return factor, default_value
+      
 if __name__ == '__main__':
   app.run(port=5000, debug=True)

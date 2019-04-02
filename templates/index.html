@@ -98,7 +98,51 @@
 			<a href = "{{ url_for('download_csv')}}" class="site-btn" >CSV Template</a>
 			<p></p>
 			<p>Upload a data csv file to predict.</p>
-			<a href="{{ url_for('predict', _anchor='predict')}}" class="site-btn">Prediction</a>
+			
+			<form class="predict-form" action="{{ url_for('predict')}}" method="POST">
+					<select class="site-btn" name="predict_city" >
+						<option value="City">City</option>
+						<option value="Toronto">Toronto</option>
+						<option value="Vancouver">Vancouver</option>
+						<option value="Ottawa">Ottawa</option>
+						<option value="Calgray">Calgray</option>
+						<option value="Edmonton">Edmonton</option>
+						<option value="Halifax">Halifax</option>
+						<option value="Hamilton">Hamilton</option>
+						<option value="Montreal">Montreal</option>
+						<option value="Quebec">Quebec</option>
+						<option value="Winnipeg">Winnipeg</option>
+
+											<!--America-->
+					<option value="Boston">Boston</option>
+					<option value="Chicago">Chicago</option>
+					<option value="Dallas">Dallas</option>
+					<option value="Las Vegas">Las Vegas</option>
+					<option value="Los Angeles">Los Angeles</option>
+					<option value="New Orleans">New Orleans</option>
+					<option value="New York">New York</option>
+					<option value="San Francisco">San Francisco</option>
+					<option value="Philadelphia">Philadelphia</option>
+					<option value="Washington">Washington</option>
+
+					<!--England-->
+					
+					{% for c in England_cities %}
+						<option value={{c}}>{{c}}</option>
+					{%endfor %}
+					</select>
+					
+					
+					<select class="site-btn" name="predict_country">
+						<option value="Country">Country</option>
+						<option value="Canada">Canada</option>
+						<option value="America">America</option>
+						<option value="England">England</option>
+					</select>
+					<button class="site-btn fs-submit">predict</button>
+			<!---a href="{{ url_for('predict', _anchor='predict')}}" class="site-btn">Prediction</a-->
+			</form>
+
 		</div>
 	</section>
 	<!-- Hero section end -->
@@ -106,29 +150,53 @@
 
 	<!-- Filter form section -->
 	<div class="filter-search">
-		<div class="container">
-			<form class="filter-form">
-				<input type="text" placeholder="Enter a country name, city name, or keyword">
-				<select>
+		<div class="option">
+			<form class="filter-form" action="{{ url_for('graph')}}" method="POST">
+				<input type="text" name="input_city" placeholder="Enter a city name">
+				<select class="countries" name="city">
 					<option value="City">City</option>
+					<!--Canada-->
 					<option value="Toronto">Toronto</option>
 					<option value="Vancouver">Vancouver</option>
 					<option value="Ottawa">Ottawa</option>
+					<option value="Calgary">Calgary</option>
+					<option value="Edmonton">Edmonton</option>
+					<option value="Halifax">Halifax</option>
+					<option value="Hamilton">Hamilton</option>
+					<option value="Montreal">Montreal</option>
+					<option value="Quebec">Quebec</option>
+					<option value="Winnipeg">Winnipeg</option>
+
+					<!--America-->
+					<option value="Boston">Boston</option>
+					<option value="Chicago">Chicago</option>
+					<option value="Dallas">Dallas</option>
+					<option value="Las Vegas">Las Vegas</option>
+					<option value="Los Angeles">Los Angeles</option>
+					<option value="New Orleans">New Orleans</option>
+					<option value="New York">New York</option>
+					<option value="San Francisco">San Francisco</option>
+					<option value="Philadelphia">Philadelphia</option>
+					<option value="Washington">Washington</option>
+
+					<!--England-->
+					{% for c in England_cities %}
+						<option value={{c}}>{{c}}</option>
+					{%endfor %}
+
 				</select>
-				<select>
+				<select class="countries" name="country">
 					<option value="Country">Country</option>
-					<option value="Canada">Canada</option>
-					<option value="Canada">America</option>
-					<option value="Canada">England</option>
+					<option class="Canada" value="Canada">Canada</option>
+					<option class="America" value="America">America</option>
+					<option class="England" value="England">England</option>
 				</select>
-				<a href="{{ url_for('graph', _anchor='bar_chart', city='dc')}}" class="site-btn fs-submit">SEARCH</a>
+				<button class="site-btn fs-submit">SEARCH</button>
 				<!----button class="site-btn fs-submit">SEARCH</button-->
 			</form>
 		</div>
 	</div>
 	<!-- Filter form section end -->
-
-
 
 	<!-- Services section -->
 	<section class="services-section spad set-bg" data-setbg="{{ url_for('static', filename='img/service-bg.jpg')}}">
@@ -188,18 +256,18 @@
 			</div>
 			<div class="gallery">
 				<div class="grid-sizer"></div>
-				<a href="#" class="gallery-item grid-wide set-bg" data-setbg="{{ url_for('static', filename='img/gallery/toronto.jpeg')}}">
+				<a href="{{url_for('display_graph',select_city='Toronto')}}" class="gallery-item grid-wide set-bg" data-setbg="{{ url_for('static', filename='img/gallery/toronto.jpeg')}}">
 					<div class="gi-info">
 						<h3>Toronto</h3>
 					</div>
 				</a>
-				<a href="#" class="gallery-item grid-long set-bg" data-setbg="{{ url_for('static', filename='img/gallery/1.jpg')}}">
+				<a href="{{url_for('display_graph',select_city='New York')}}" class="gallery-item grid-long set-bg" data-setbg="{{ url_for('static', filename='img/gallery/1.jpg')}}">
 					<div class="gi-info">
 						<h3>New York</h3>
 					</div>
 				</a>
 
-				<a href="#" class="gallery-item set-bg" data-setbg="{{ url_for('static', filename='img/gallery/6.jpeg')}}">
+				<a href="{{url_for('display_graph',select_city='London')}}" class="gallery-item set-bg" data-setbg="{{ url_for('static', filename='img/gallery/6.jpeg')}}">
 					<div class="gi-info">
 						<h3>London</h3>
 					</div>
@@ -336,5 +404,8 @@ Copyright &copy;<script>document.write(new Date().getFullYear());</script> All r
 	<script src="{{ url_for('static', filename='js/masonry.pkgd.min.js')}}"></script>
 	<script src="{{ url_for('static', filename='js/magnific-popup.min.js')}}"></script>
 	<script src="{{ url_for('static', filename='js/main.js')}}"></script>
+	<script src="{{ url_for('static', filename='js/city.js')}}"></script>
+
+
 </body>
 </html>
