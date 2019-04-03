@@ -34,7 +34,7 @@ def predict():
     result = request.form
     city = result["predict_city"]
     country = result["predict_country"]
-    factor, default_value = topFactor(country,city)
+    factor, default_value,country = topFactor(country,city)
     global current_country, current_city
     current_country = country
     current_city = city
@@ -52,7 +52,7 @@ def result():
     country = current_country
 
 
-    factor, default_value=topFactor(country,city)
+    factor, default_value, country=topFactor(country,city)
     index=0
     if city == 'Toronto':
         index=1
@@ -465,7 +465,7 @@ def result():
         price=price*(1+popf*(population2-population)/(population2+population))
         price=price*(1+unef*(unemployment-unemployment2)/(unemployment+unemployment2))  
 
-    price = round(price,2)
+    price = round(price,1)
     return render_template('result.html',result=result,price=price,city=current_city,country=current_country,factor=factor, default_value=default_value,
                           England_cities=England_cities)
 
@@ -587,7 +587,7 @@ def topFactor(country,city):
         default_value = [106.3,52.8,299056,43487.40]
   
 
-    return factor, default_value
+    return factor, default_value,country
       
 if __name__ == '__main__':
   app.run(port=5000, debug=True)

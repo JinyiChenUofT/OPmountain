@@ -75,7 +75,7 @@
 						</div>
 						<ul class="main-menu">
 							<li><a href="{{ url_for('home')}}">Home</a></li>
-							<li><a href="{{ url_for('predict')}}">Prediction</a></li>
+							<li><a href="{{ url_for('home')}}">Prediction</a></li>
 							<li><a href="">ABOUT US</a></li>
 							<li><a href="">Pages</a></li>
 							<li><a href="">Blog</a></li>
@@ -98,7 +98,7 @@
 			<a href = "{{ url_for('download_csv')}}" class="site-btn" >CSV Template</a>
 			<p></p>
 			<p>Upload a data csv file to predict.</p>
-			<a href="{{ url_for('predict')}}" class="site-btn">Prediction</a>
+			<a href="{{ url_for('home')}}" class="site-btn">Prediction</a>
 		</div>
 	</section>
 	<!-- Hero section end -->
@@ -338,8 +338,8 @@
 			<div class="footer-bottom">
 				<div class="footer-nav">
 					<ul>
-						<li><a href="">Home</a></li>
-						<li><a href="{{ url_for('predict')}}">Prediction</a></li>
+						<li><a href="{{ url_for('home')}}">Home</a></li>
+						<li><a href="{{ url_for('home')}}">Prediction</a></li>
 						<li><a href="">About  Us</a></li>
 						<li><a href="">Pages</a></li>
 						<li><a href="">Blog</a></li>
